@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign Up — DECIMETER</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #050505;
+  --red: #e10600;
+  --white: #ffffff;
+  --glass: rgba(255,255,255,0.08);
+  --border: rgba(255,255,255,0.2);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: radial-gradient(circle at top, #1a1a1a, #000);
+  color: var(--white);
+  min-height: 100vh;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+header {
+  padding: 30px 0;
+}
+.logo {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2rem;
+  letter-spacing: 3px;
+  color: var(--white);
+  text-decoration: none;
+  display: inline-block;
+}
+.logo span { color: var(--red); }
+.signup-box {
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 500px;
+  margin: 50px auto;
+}
+.signup-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.signup-header h1 {
+  font-size: 2.2rem;
+  margin-bottom: 10px;
+}
+.signup-header h1 span { color: var(--red); }
+.signup-header p {
+  opacity: 0.7;
+}
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.form-control {
+  width: 100%;
+  padding: 14px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--white);
+  font-size: 16px;
+}
+.form-control:focus {
+  outline: none;
+  border-color: var(--red);
+}
+.form-row {
+  display: flex;
+  gap: 15px;
+}
+.form-row .form-group {
+  flex: 1;
+}
+.signup-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--red);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.signup-btn:hover {
+  background: #ff3b3b;
+}
+.signup-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.login-link {
+  text-align: center;
+  margin-top: 25px;
+  opacity: 0.8;
+}
+.login-link a {
+  color: var(--red);
+  text-decoration: none;
+  font-weight: 600;
+}
+footer {
+  text-align: center;
+  padding: 40px 0;
+  opacity: 0.6;
+  margin-top: 50px;
+  border-top: 1px solid var(--border);
+}
+#message {
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: none;
+  font-weight: 500;
+}
+.message-success {
+  background: rgba(76, 175, 80, 0.1);
+  color: #4caf50;
+  border: 1px solid rgba(76, 175, 80, 0.3);
+}
+.message-error {
+  background: rgba(255, 59, 59, 0.1);
+  color: #ff6b6b;
+  border: 1px solid rgba(255, 59, 59, 0.3);
+}
+.loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255,255,255,.3);
+  border-radius: 50%;
+  border-top-color: var(--red);
+  animation: spin 1s ease-in-out infinite;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.password-strength {
+  margin-top: 8px;
+  height: 4px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.strength-bar {
+  height: 100%;
+  width: 0%;
+  border-radius: 2px;
+  transition: width 0.3s, background 0.3s;
+}
+.strength-text {
+  font-size: 0.8rem;
+  margin-top: 5px;
+  opacity: 0.7;
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <a href="index.html" class="logo">DECI<span>METER</span></a>
+  </header>
+  
+  <div class="signup-box">
+    <div class="signup-header">
+      <h1>JOIN <span>DECIMETER</span></h1>
+      <p>Create your account and start shopping</p>
+    </div>
+    
+    <div id="message"></div>
+    
+    <form id="signupForm">
+      <div class="form-row">
+        <div class="form-group">
+          <label>FIRST NAME</label>
+          <input type="text" id="firstName" class="form-control" placeholder="John" required>
+        </div>
+        <div class="form-group">
+          <label>LAST NAME</label>
+          <input type="text" id="lastName" class="form-control" placeholder="Doe" required>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label>EMAIL ADDRESS</label>
+        <input type="email" id="email" class="form-control" placeholder="you@example.com" required>
+      </div>
+      
+      <div class="form-group">
+        <label>PASSWORD</label>
+        <input type="password" id="password" class="form-control" placeholder="••••••••" required>
+        <div class="password-strength">
+          <div class="strength-bar" id="strengthBar"></div>
+        </div>
+        <div class="strength-text" id="strengthText">Password strength: Weak</div>
+      </div>
+      
+      <div class="form-group">
+        <label>CONFIRM PASSWORD</label>
+        <input type="password" id="confirmPassword" class="form-control" placeholder="••••••••" required>
+      </div>
+      
+      <button type="submit" class="signup-btn" id="submitBtn">
+        <span id="btnText">CREATE ACCOUNT</span>
+        <span id="btnLoading" class="loading" style="display:none;"></span>
+      </button>
+      
+      <div class="login-link">
+        Already have an account? <a href="login.html">Sign in here</a>
+      </div>
+    </form>
+  </div>
+  
+  <footer>
+    © 2026 DECIMETER — Youth Streetwear Culture
+  </footer>
+</div>
+
+<script>
+// Password strength indicator
+document.getElementById('password').addEventListener('input', function() {
+  const password = this.value;
+  const strengthBar = document.getElementById('strengthBar');
+  const strengthText = document.getElementById('strengthText');
+  
+  let score = 0;
+  if (password.length >= 8) score += 1;
+  if (password.length >= 12) score += 1;
+  if (/[a-z]/.test(password)) score += 1;
+  if (/[A-Z]/.test(password)) score += 1;
+  if (/[0-9]/.test(password)) score += 1;
+  if (/[^a-zA-Z0-9]/.test(password)) score += 1;
+  
+  if (score <= 2) {
+    strengthBar.style.width = '33%';
+    strengthBar.style.background = '#ff6b6b';
+    strengthText.textContent = 'Password strength: Weak';
+    strengthText.style.color = '#ff6b6b';
+  } else if (score <= 4) {
+    strengthBar.style.width = '66%';
+    strengthBar.style.background = '#ffa726';
+    strengthText.textContent = 'Password strength: Medium';
+    strengthText.style.color = '#ffa726';
+  } else {
+    strengthBar.style.width = '100%';
+    strengthBar.style.background = '#4caf50';
+    strengthText.textContent = 'Password strength: Strong';
+    strengthText.style.color = '#4caf50';
+  }
+});
+
+// Signup form handler
+document.getElementById('signupForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const firstName = document.getElementById('firstName').value.trim();
+  const lastName = document.getElementById('lastName').value.trim();
+  const email = document.getElementById('email').value.trim().toLowerCase();
+  const password = document.getElementById('password').value;
+  const confirmPassword = document.getElementById('confirmPassword').value;
+  const submitBtn = document.getElementById('submitBtn');
+  const btnText = document.getElementById('btnText');
+  const btnLoading = document.getElementById('btnLoading');
+  const message = document.getElementById('message');
+  
+  // Clear message
+  message.style.display = 'none';
+  message.className = '';
+  message.textContent = '';
+  
+  // Validation
+  if (!firstName || !lastName || !email || !password || !confirmPassword) {
+    showMessage('Please fill in all fields', 'error');
+    return;
+  }
+  
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    showMessage('Please enter a valid email address', 'error');
+    return;
+  }
+  
+  if (password.length < 8) {
+    showMessage('Password must be at least 8 characters', 'error');
+    return;
+  }
+  
+  if (password !== confirmPassword) {
+    showMessage('Passwords do not match', 'error');
+    return;
+  }
+  
+  // Show loading
+  btnText.textContent = 'Creating account...';
+  btnLoading.style.display = 'inline-block';
+  submitBtn.disabled = true;
+  
+  try {
+    // Call Netlify function with real registration
+    const response = await fetch('/.netlify/functions/auth', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        action: 'register',
+        email: email,
+        password: password,
+        firstName: firstName,
+        lastName: lastName
+      })
+    });
+    
+    const data = await response.json();
+    
+    if (data.success) {
+      // Save user session with token
+      const userData = {
+        id: data.user.id,
+        email: data.user.email,
+        name: data.user.name,
+        firstName: data.user.firstName,
+        lastName: data.user.lastName,
+        loggedIn: true,
+        token: data.token
+      };
+      
+      localStorage.setItem('decimeterUser', JSON.stringify(userData));
+      localStorage.setItem('authToken', data.token);
+      
+      showMessage('Account created successfully! Redirecting...', 'success');
+      
+      // Redirect to success page
+      setTimeout(() => {
+        window.location.href = 'success.html?form=signup';
+      }, 1500);
+      
+    } else {
+      showMessage(data.error || 'Registration failed. Please try again.', 'error');
+      resetButton();
+    }
+    
+  } catch (error) {
+    console.error('Signup error:', error);
+    showMessage('Network error. Please try again.', 'error');
+    resetButton();
+  }
+});
+
+function showMessage(text, type) {
+  const message = document.getElementById('message');
+  message.textContent = text;
+  message.className = `message-${type}`;
+  message.style.display = 'block';
+}
+
+function resetButton() {
+  document.getElementById('btnText').textContent = 'CREATE ACCOUNT';
+  document.getElementById('btnLoading').style.display = 'none';
+  document.getElementById('submitBtn').disabled = false;
+}
+
+// Check if already logged in
+window.addEventListener('load', async function() {
+  try {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      const response = await fetch('/.netlify/functions/auth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          action: 'verify',
+          token: token
+        })
+      });
+      
+      const data = await response.json();
+      if (data.success) {
+        window.location.href = 'index.html';
+      }
+    }
+  } catch (e) {
+    // Ignore errors
+  }
+});
+</script>
+</body>
+</html>

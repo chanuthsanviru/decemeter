@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Product — DECIMETER</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+  --black: #050505;
+  --red: #e10600;
+  --white: #ffffff;
+  --glass: rgba(255,255,255,0.08);
+  --border: rgba(255,255,255,0.2);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: radial-gradient(circle at top, #1a1a1a, #000);
+  color: var(--white);
+  min-height: 100vh;
+}
+
+.glass {
+  background: var(--glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+  padding: 18px;
+  transition: 0.4s;
+}
+
+/* Header */
+header {
+  position: sticky;
+  top: 20px;
+  margin: 20px;
+  padding: 18px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+}
+
+.logo {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.8rem;
+  letter-spacing: 3px;
+  cursor: pointer;
+  color: var(--white);
+  text-decoration: none;
+}
+
+.logo span { color: var(--red); }
+
+/* User Status */
+.user-status {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.user-status a {
+  color: var(--white);
+  text-decoration: none;
+  opacity: 0.8;
+  transition: 0.3s;
+}
+
+.user-status a:hover {
+  color: var(--red);
+  opacity: 1;
+}
+
+#userInfo {
+  display: none;
+  align-items: center;
+  gap: 10px;
+}
+
+#userName {
+  font-weight: 600;
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  color: var(--red);
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-left: 10px;
+}
+
+.logout-btn:hover {
+  text-decoration: underline;
+}
+
+/* Navigation */
+nav {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+nav a {
+  text-decoration: none;
+  color: var(--white);
+  opacity: 0.8;
+  transition: 0.3s;
+  font-weight: 500;
+}
+
+nav a:hover { color: var(--red); opacity: 1; }
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  z-index: 200;
+}
+
+.hamburger div {
+  width: 25px;
+  height: 3px;
+  background-color: var(--white);
+  margin: 4px 0;
+  transition: 0.3s;
+}
+
+/* Product Container */
+.product-container {
+  padding: 40px 8vw;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--white);
+  text-decoration: none;
+  opacity: 0.8;
+  margin-bottom: 30px;
+  transition: 0.3s;
+}
+
+.back-link:hover {
+  color: var(--red);
+  opacity: 1;
+}
+
+.product-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  margin-bottom: 60px;
+}
+
+@media(max-width: 1024px) {
+  .product-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}
+
+/* Product Gallery */
+.product-gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.main-image {
+  border-radius: 20px;
+  overflow: hidden;
+  height: 500px;
+  background: linear-gradient(135deg, #222, #111);
+}
+
+.main-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumbnail-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.thumbnail {
+  height: 100px;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: 0.3s;
+  background: linear-gradient(135deg, #222, #111);
+}
+
+.thumbnail:hover {
+  opacity: 0.8;
+}
+
+.thumbnail.active {
+  opacity: 1;
+  border: 2px solid var(--red);
+}
+
+.thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Product Info */
+.product-info h1 {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  color: var(--white);
+}
+
+.product-price {
+  font-size: 2rem;
+  color: var(--red);
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.product-rating {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 25px;
+}
+
+.stars {
+  color: #ffd700;
+}
+
+.review-count {
+  opacity: 0.7;
+  font-size: 0.9rem;
+}
+
+.product-description {
+  opacity: 0.8;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  font-size: 1.05rem;
+}
+
+/* Product Options */
+.product-options {
+  margin-bottom: 30px;
+}
+
+.option-group {
+  margin-bottom: 25px;
+}
+
+.option-label {
+  font-weight: 600;
+  margin-bottom: 12px;
+  display: block;
+  font-size: 1.1rem;
+}
+
+.size-options {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.size-option {
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.3s;
+  font-weight: 600;
+}
+
+.size-option:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.size-option.selected {
+  background: var(--red);
+  border-color: var(--red);
+}
+
+.color-options {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.color-option {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: all 0.3s;
+  position: relative;
+}
+
+.color-option.selected {
+  border-color: var(--white);
+  transform: scale(1.1);
+}
+
+.color-option.selected::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.color-black { background: #050505; }
+.color-red { background: #e10600; }
+.color-white { background: #ffffff; }
+.color-gray { background: #666666; }
+.color-blue { background: #2196f3; }
+
+/* Quantity */
+.quantity-control {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.quantity-label {
+  font-weight: 600;
+  min-width: 80px;
+}
+
+.quantity-selector {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 50px;
+  padding: 5px 15px;
+}
+
+.qty-btn {
+  background: none;
+  border: none;
+  color: var(--white);
+  cursor: pointer;
+  font-size: 1.2rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s;
+}
+
+.qty-btn:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.quantity {
+  font-weight: 600;
+  min-width: 40px;
+  text-align: center;
+  font-size: 1.2rem;
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 40px;
+}
+
+.action-buttons button {
+  flex: 1;
+  padding: 18px;
+  border-radius: 12px;
+  border: none;
+  font-weight: 700;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.add-to-cart-btn {
+  background: rgba(255,255,255,0.1);
+  color: var(--white);
+  border: 1px solid var(--border);
+}
+
+.add-to-cart-btn:hover {
+  background: rgba(225,6,0,0.2);
+  border-color: var(--red);
+}
+
+.buy-now-btn {
+  background: var(--red);
+  color: white;
+}
+
+.buy-now-btn:hover {
+  background: #ff3b3b;
+  transform: scale(1.05);
+}
+
+/* Product Details */
+.product-details {
+  margin-top: 30px;
+}
+
+.details-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 30px;
+}
+
+.tab {
+  padding: 15px 30px;
+  background: none;
+  border: none;
+  color: var(--white);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  opacity: 0.7;
+  position: relative;
+}
+
+.tab.active {
+  opacity: 1;
+  color: var(--red);
+}
+
+.tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--red);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.5s ease;
+}
+
+.detail-list {
+  list-style: none;
+}
+
+.detail-list li {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+}
+
+.detail-list li:last-child {
+  border-bottom: none;
+}
+
+.detail-label {
+  font-weight: 600;
+  min-width: 150px;
+}
+
+.detail-value {
+  opacity: 0.8;
+}
+
+/* Related Products */
+.related-products {
+  margin-top: 60px;
+}
+
+.section-title {
+  font-size: 2rem;
+  margin-bottom: 30px;
+  color: var(--white);
+}
+
+.section-title span { color: var(--red); }
+
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 30px;
+}
+
+.product-card {
+  padding: 20px;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.product-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 0 40px rgba(225,6,0,0.4);
+}
+
+.product-img {
+  height: 250px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #222, #111);
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.product-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+  transition: transform 0.5s;
+}
+
+.product-card:hover .product-img img {
+  transform: scale(1.05);
+}
+
+.product-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.product-title {
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 5px;
+}
+
+.product-price {
+  font-size: 1.3rem;
+  color: var(--red);
+  font-weight: 700;
+}
+
+/* Cart */
+.cart {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  cursor: pointer;
+  background: rgba(225,6,0,0.25);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255,255,255,0.3);
+  box-shadow: 0 0 40px rgba(0,0,0,0.7);
+  z-index: 99;
+  transition: transform 0.3s;
+}
+
+.cart:hover { transform: scale(1.1); }
+
+.cart-count {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: var(--red);
+  color: white;
+  font-size: 0.8rem;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+/* Footer */
+footer {
+  padding: 50px 20px;
+  text-align: center;
+  opacity: 0.6;
+  border-top: 1px solid var(--border);
+  margin-top: 60px;
+}
+
+/* Responsive */
+@media(max-width:768px){
+  nav {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    height: 100vh;
+    width: 280px;
+    background: rgba(5,5,5,0.95);
+    backdrop-filter: blur(20px);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    transition: right 0.3s ease;
+    z-index: 150;
+  }
+  
+  nav.show { right: 0; }
+  
+  .hamburger { display: flex; }
+  .hamburger.active div:nth-child(1) { transform: rotate(-45deg) translate(-5px, 6px); }
+  .hamburger.active div:nth-child(2) { opacity: 0; }
+  .hamburger.active div:nth-child(3) { transform: rotate(45deg) translate(-5px, -6px); }
+  
+  .main-image {
+    height: 350px;
+  }
+  
+  .thumbnail-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  
+  .thumbnail {
+    height: 70px;
+  }
+  
+  .action-buttons {
+    flex-direction: column;
+  }
+  
+  .user-status {
+    display: none;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Login/Logout Styles */
+#loginLink {
+  display: inline-block;
+}
+
+#userInfo {
+  display: none;
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="glass">
+  <a href="index.html" class="logo">DECI<span>METER</span></a>
+  
+  <!-- Hamburger Menu (Mobile) -->
+  <div class="hamburger" id="hamburger">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+
+  <nav id="nav-links">
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="drops.html">Drops</a>
+    <a href="about.html">About</a>
+    <a href="cart.html">Cart</a>
+    
+    <!-- User Status -->
+    <div class="user-status">
+      <a href="login.html" id="loginLink">Login</a>
+      <div id="userInfo">
+        <span>Hi, <span id="userName"></span></span>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- Product Container -->
+<div class="product-container">
+  <a href="shop.html" class="back-link">
+    <i class="fas fa-arrow-left"></i> Back to Shop
+  </a>
+
+  <div class="product-content">
+    <!-- Product Gallery -->
+    <div class="product-gallery">
+      <div class="main-image glass">
+        <img id="mainImage" src="images/shirt1.jpg" alt="Product">
+      </div>
+      <div class="thumbnail-grid">
+        <div class="thumbnail active" data-image="images/shirt1.jpg">
+          <img src="images/shirt1.jpg" alt="Product">
+        </div>
+        <div class="thumbnail" data-image="images/shirt2.jpg">
+          <img src="images/shirt2.jpg" alt="Product">
+        </div>
+        <div class="thumbnail" data-image="images/shirt3.jpg">
+          <img src="images/shirt3.jpg" alt="Product">
+        </div>
+        <div class="thumbnail" data-image="images/shirt4.jpg">
+          <img src="images/shirt4.jpg" alt="Product">
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Info -->
+    <div class="product-info">
+      <h1 id="productName">Decimeter T-Shirt</h1>
+      <div class="product-price" id="productPrice">$10.00</div>
+      
+      <div class="product-rating">
+        <div class="stars">
+          ★★★★★
+        </div>
+        <div class="review-count">(128 reviews)</div>
+      </div>
+      
+      <p class="product-description" id="productDescription">
+        Premium cotton t-shirt with the iconic DECIMETER logo. Designed for comfort and style, featuring a regular fit and double-stitched seams for durability.
+      </p>
+      
+      <!-- Product Options -->
+      <div class="product-options">
+        <div class="option-group">
+          <label class="option-label">SIZE</label>
+          <div class="size-options">
+            <div class="size-option selected" data-size="S">S</div>
+            <div class="size-option" data-size="M">M</div>
+            <div class="size-option" data-size="L">L</div>
+            <div class="size-option" data-size="XL">XL</div>
+            <div class="size-option" data-size="XXL">XXL</div>
+          </div>
+        </div>
+        
+        <div class="option-group">
+          <label class="option-label">COLOR</label>
+          <div class="color-options">
+            <div class="color-option color-black selected" data-color="Black"></div>
+            <div class="color-option color-red" data-color="Red"></div>
+            <div class="color-option color-white" data-color="White"></div>
+            <div class="color-option color-gray" data-color="Gray"></div>
+          </div>
+        </div>
+        
+        <div class="quantity-control">
+          <label class="quantity-label">QUANTITY</label>
+          <div class="quantity-selector">
+            <button class="qty-btn" id="decreaseQty">-</button>
+            <span class="quantity" id="quantity">1</span>
+            <button class="qty-btn" id="increaseQty">+</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button class="add-to-cart-btn" id="addToCartBtn">
+          <i class="fas fa-shopping-cart"></i>
+          ADD TO CART
+        </button>
+        <button class="buy-now-btn" id="buyNowBtn">
+          <i class="fas fa-bolt"></i>
+          BUY NOW
+        </button>
+      </div>
+      
+      <!-- Product Details -->
+      <div class="product-details">
+        <div class="details-tabs">
+          <button class="tab active" data-tab="description">DESCRIPTION</button>
+          <button class="tab" data-tab="details">DETAILS</button>
+          <button class="tab" data-tab="shipping">SHIPPING</button>
+        </div>
+        
+        <div class="tab-content active" id="descriptionTab">
+          <p>
+            Crafted from 100% premium cotton, this t-shirt offers superior comfort and breathability. The DECIMETER logo is screen-printed with high-quality ink that withstands multiple washes without fading.
+          </p>
+          <p>
+            Features a regular fit, ribbed collar, and double-stitched seams for enhanced durability. Perfect for everyday wear or streetwear styling.
+          </p>
+        </div>
+        
+        <div class="tab-content" id="detailsTab">
+          <ul class="detail-list">
+            <li>
+              <span class="detail-label">Material</span>
+              <span class="detail-value">100% Cotton</span>
+            </li>
+            <li>
+              <span class="detail-label">Fit</span>
+              <span class="detail-value">Regular</span>
+            </li>
+            <li>
+              <span class="detail-label">Care</span>
+              <span class="detail-value">Machine wash cold, tumble dry low</span>
+            </li>
+            <li>
+              <span class="detail-label">Origin</span>
+              <span class="detail-value">Made in Sri Lanka</span>
+            </li>
+            <li>
+              <span class="detail-label">SKU</span>
+              <span class="detail-value">DECI-TS-001</span>
+            </li>
+          </ul>
+        </div>
+        
+        <div class="tab-content" id="shippingTab">
+          <ul class="detail-list">
+            <li>
+              <span class="detail-label">Free Shipping</span>
+              <span class="detail-value">On orders over $100</span>
+            </li>
+            <li>
+              <span class="detail-label">Standard Shipping</span>
+              <span class="detail-value">$10 (3-5 business days)</span>
+            </li>
+            <li>
+              <span class="detail-label">Express Shipping</span>
+              <span class="detail-value">$20 (1-2 business days)</span>
+            </li>
+            <li>
+              <span class="detail-label">International</span>
+              <span class="detail-value">$25 (7-14 business days)</span>
+            </li>
+            <li>
+              <span class="detail-label">Returns</span>
+              <span class="detail-value">30-day return policy</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Related Products -->
+  <div class="related-products">
+    <h2 class="section-title">YOU MIGHT <span>ALSO LIKE</span></h2>
+    <div class="products-grid" id="relatedProducts">
+      <!-- Related products loaded dynamically -->
+    </div>
+  </div>
+</div>
+
+<!-- Floating Cart -->
+<div class="cart" onclick="window.location.href='cart.html'">
+  <i class="fas fa-shopping-bag"></i>
+  <div class="cart-count" id="cartCount">0</div>
+</div>
+
+<!-- Footer -->
+<footer>© 2026 DECIMETER — Youth Streetwear Culture</footer>
+
+<script>
+// User authentication functions
+function checkLoginStatus() {
+  try {
+    const user = JSON.parse(localStorage.getItem('decimeterUser'));
+    const loginLink = document.getElementById('loginLink');
+    const userInfo = document.getElementById('userInfo');
+    const userName = document.getElementById('userName');
+    
+    if (user && user.loggedIn) {
+      // User is logged in
+      if (loginLink) loginLink.style.display = 'none';
+      if (userInfo) userInfo.style.display = 'flex';
+      if (userName) userName.textContent = user.name || user.email;
+    } else {
+      // User is not logged in
+      if (loginLink) loginLink.style.display = 'block';
+      if (userInfo) userInfo.style.display = 'none';
+    }
+  } catch (e) {
+    console.log('Error checking login status:', e);
+  }
+}
+
+function logout() {
+  localStorage.removeItem('decimeterUser');
+  window.location.reload();
+}
+
+// Update cart count
+function updateCartCount() {
+  const cart = JSON.parse(localStorage.getItem('decimeterCart')) || [];
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const cartCount = document.getElementById('cartCount');
+  if (cartCount) {
+    cartCount.textContent = totalItems;
+  }
+}
+
+// Product data
+const products = {
+  1: { 
+    name: "Decimeter T-Shirt", 
+    price: 10, 
+    description: "Premium cotton t-shirt with the iconic DECIMETER logo. Designed for comfort and style, featuring a regular fit and double-stitched seams for durability.",
+    images: ["images/shirt1.jpg", "images/shirt2.jpg", "images/shirt3.jpg", "images/shirt4.jpg"],
+    category: "t-shirts"
+  },
+  2: { 
+    name: "Decimeter T2", 
+    price: 10, 
+    description: "Alternative design DECIMETER t-shirt with distressed print effect. Made from soft cotton blend.",
+    images: ["images/shirt2.jpg", "images/shirt1.jpg", "images/shirt3.jpg", "images/shirt4.jpg"],
+    category: "t-shirts"
+  },
+  3: { 
+    name: "Cargo Pants", 
+    price: 45, 
+    description: "Utility cargo pants with multiple pockets and adjustable straps. Durable cotton-twill fabric.",
+    images: ["images/cargo.jpg", "images/cargo2.jpg", "images/cargo3.jpg"],
+    category: "pants"
+  },
+  4: { 
+    name: "Black Hoodie", 
+    price: 65, 
+    description: "Heavyweight cotton hoodie with kangaroo pocket and drawstring hood. Embroidered DECIMETER logo.",
+    images: ["images/hoodie.jpg", "images/hoodie2.jpg", "images/hoodie3.jpg"],
+    category: "hoodies"
+  },
+  101: { 
+    name: "Shadow Collection", 
+    price: 89, 
+    description: "Limited edition shadow collection hoodie with unique reflective detailing and custom embroidery.",
+    images: ["images/shadow-drop.jpg", "images/shadow2.jpg", "images/shadow3.jpg"],
+    category: "drops"
+  }
+};
+
+// Get product ID from URL
+function getProductId() {
+  const urlParams = new URLSearchParams(window.location.search);
+  let productId = urlParams.get('id');
+  
+  // If no ID in URL, check localStorage
+  if (!productId) {
+    productId = localStorage.getItem('selectedProduct') || 1;
+  }
+  
+  return parseInt(productId) || 1;
+}
+
+// Load product
+function loadProduct() {
+  const productId = getProductId();
+  const product = products[productId];
+  
+  if (!product) {
+    // Redirect to shop if product not found
+    window.location.href = 'shop.html';
+    return;
+  }
+  
+  // Update product info
+  document.getElementById('productName').textContent = product.name;
+  document.getElementById('productPrice').textContent = `$${product.price}`;
+  document.getElementById('productDescription').textContent = product.description;
+  
+  // Update images
+  const mainImage = document.getElementById('mainImage');
+  if (mainImage && product.images.length > 0) {
+    mainImage.src = product.images[0];
+    mainImage.alt = product.name;
+  }
+  
+  // Update thumbnails
+  const thumbnailGrid = document.querySelector('.thumbnail-grid');
+  if (thumbnailGrid) {
+    thumbnailGrid.innerHTML = product.images.map((img, index) => `
+      <div class="thumbnail ${index === 0 ? 'active' : ''}" data-image="${img}">
+        <img src="${img}" alt="${product.name}">
+      </div>
+    `).join('');
+    
+    // Add click events to thumbnails
+    document.querySelectorAll('.thumbnail').forEach(thumb => {
+      thumb.addEventListener('click', () => {
+        const imageSrc = thumb.getAttribute('data-image');
+        mainImage.src = imageSrc;
+        
+        // Update active state
+        document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+        thumb.classList.add('active');
+      });
+    });
+  }
+  
+  // Load related products
+  loadRelatedProducts(productId, product.category);
+}
+
+// Load related products
+function loadRelatedProducts(currentId, category) {
+  const relatedProducts = document.getElementById('relatedProducts');
+  if (!relatedProducts) return;
+  
+  // Filter products by same category, exclude current product
+  const related = Object.entries(products)
+    .filter(([id, product]) => id != currentId && product.category === category)
+    .slice(0, 4);
+  
+  if (related.length === 0) {
+    // If no same category products, show random products
+    relatedProducts.innerHTML = `
+      <div style="grid-column: 1/-1; text-align: center; padding: 40px;">
+        <p>Check out our other collections</p>
+        <a href="shop.html" style="color: var(--red); text-decoration: none; font-weight: 600;">Browse All Products →</a>
+      </div>
+    `;
+    return;
+  }
+  
+  relatedProducts.innerHTML = related.map(([id, product]) => `
+    <div class="product-card glass" data-id="${id}">
+      <div class="product-img">
+        <img src="${product.images[0]}" alt="${product.name}">
+      </div>
+      <div class="product-info">
+        <div>
+          <div class="product-title">${product.name}</div>
+          <div class="product-category">${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</div>
+        </div>
+        <div class="product-price">$${product.price}</div>
+      </div>
+      <button class="add-to-cart-btn" style="margin-top: auto; padding: 10px;" onclick="addToCart(${id})">Add to Cart</button>
+    </div>
+  `).join('');
+  
+  // Add click events to product cards
+  document.querySelectorAll('.product-card[data-id]').forEach(card => {
+    card.addEventListener('click', function(e) {
+      if (!e.target.closest('.add-to-cart-btn')) {
+        const productId = this.getAttribute('data-id');
+        window.location.href = `product.html?id=${productId}`;
+      }
+    });
+  });
+}
+
+// Add to cart
+function addToCart() {
+  const productId = getProductId();
+  const product = products[productId];
+  if (!product) return;
+  
+  const size = document.querySelector('.size-option.selected')?.getAttribute('data-size') || 'M';
+  const color = document.querySelector('.color-option.selected')?.getAttribute('data-color') || 'Black';
+  const quantity = parseInt(document.getElementById('quantity').textContent) || 1;
+  
+  const cart = JSON.parse(localStorage.getItem('decimeterCart')) || [];
+  
+  // Check if same product with same size and color already in cart
+  const existingItemIndex = cart.findIndex(item => 
+    item.id === productId && 
+    item.size === size && 
+    item.color === color
+  );
+  
+  if (existingItemIndex !== -1) {
+    cart[existingItemIndex].quantity += quantity;
+  } else {
+    cart.push({ 
+      id: productId, 
+      name: product.name, 
+      price: `$${product.price}`, 
+      quantity: quantity,
+      size: size,
+      color: color,
+      image: product.images[0]
+    });
+  }
+  
+  localStorage.setItem('decimeterCart', JSON.stringify(cart));
+  updateCartCount();
+  
+  // Show notification
+  showNotification(`${product.name} added to cart`);
+}
+
+// Buy now
+function buyNow() {
+  const productId = getProductId();
+  const product = products[productId];
+  if (!product) return;
+  
+  const size = document.querySelector('.size-option.selected')?.getAttribute('data-size') || 'M';
+  const color = document.querySelector('.color-option.selected')?.getAttribute('data-color') || 'Black';
+  const quantity = parseInt(document.getElementById('quantity').textContent) || 1;
+  
+  const cart = [{ 
+    id: productId, 
+    name: product.name, 
+    price: `$${product.price}`, 
+    quantity: quantity,
+    size: size,
+    color: color,
+    image: product.images[0]
+  }];
+  
+  localStorage.setItem('decimeterCart', JSON.stringify(cart));
+  localStorage.setItem('buyNowMode', 'true');
+  window.location.href = 'checkout.html';
+}
+
+// Show notification
+function showNotification(message) {
+  const notification = document.createElement('div');
+  notification.style.cssText = `
+    position: fixed;
+    top: 30px;
+    right: 30px;
+    background: var(--red);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 10px;
+    z-index: 1000;
+    animation: slideIn 0.3s ease;
+    font-weight: 600;
+  `;
+  notification.textContent = message;
+  document.body.appendChild(notification);
+  
+  setTimeout(() => {
+    notification.style.animation = 'slideOut 0.3s ease';
+    setTimeout(() => notification.remove(), 300);
+  }, 3000);
+}
+
+// Tabs functionality
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const tabId = tab.getAttribute('data-tab');
+    
+    // Update active tab
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    
+    // Show active content
+    document.querySelectorAll('.tab-content').forEach(content => {
+      content.classList.remove('active');
+    });
+    document.getElementById(`${tabId}Tab`).classList.add('active');
+  });
+});
+
+// Size selection
+document.querySelectorAll('.size-option').forEach(option => {
+  option.addEventListener('click', () => {
+    document.querySelectorAll('.size-option').forEach(o => o.classList.remove('selected'));
+    option.classList.add('selected');
+  });
+});
+
+// Color selection
+document.querySelectorAll('.color-option').forEach(option => {
+  option.addEventListener('click', () => {
+    document.querySelectorAll('.color-option').forEach(o => o.classList.remove('selected'));
+    option.classList.add('selected');
+  });
+});
+
+// Quantity control
+document.getElementById('increaseQty').addEventListener('click', () => {
+  const quantityElement = document.getElementById('quantity');
+  let quantity = parseInt(quantityElement.textContent) || 1;
+  quantityElement.textContent = quantity + 1;
+});
+
+document.getElementById('decreaseQty').addEventListener('click', () => {
+  const quantityElement = document.getElementById('quantity');
+  let quantity = parseInt(quantityElement.textContent) || 1;
+  if (quantity > 1) {
+    quantityElement.textContent = quantity - 1;
+  }
+});
+
+// Action buttons
+document.getElementById('addToCartBtn').addEventListener('click', addToCart);
+document.getElementById('buyNowBtn').addEventListener('click', buyNow);
+
+// Hamburger menu
+const hamburger = document.getElementById('hamburger');
+const nav = document.getElementById('nav-links');
+
+if (hamburger) {
+  hamburger.addEventListener('click', () => {
+    nav.classList.toggle('show');
+    hamburger.classList.toggle('active');
+  });
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+  checkLoginStatus();
+  updateCartCount();
+  loadProduct();
+  
+  // Add animation styles
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideOut {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(100%); opacity: 0; }
+    }
+  `;
+  document.head.appendChild(style);
+});
+</script>
+</body>
+</html>

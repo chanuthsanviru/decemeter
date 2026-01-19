@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login — DECIMETER</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --black: #050505;
+  --red: #e10600;
+  --white: #ffffff;
+  --glass: rgba(255,255,255,0.08);
+  --border: rgba(255,255,255,0.2);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: radial-gradient(circle at top, #1a1a1a, #000);
+  color: var(--white);
+  min-height: 100vh;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+header {
+  padding: 30px 0;
+}
+.logo {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2rem;
+  letter-spacing: 3px;
+  color: var(--white);
+  text-decoration: none;
+  display: inline-block;
+}
+.logo span { color: var(--red); }
+.login-box {
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 400px;
+  margin: 50px auto;
+}
+.login-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.login-header h1 {
+  font-size: 2.2rem;
+  margin-bottom: 10px;
+}
+.login-header h1 span { color: var(--red); }
+.login-header p {
+  opacity: 0.7;
+}
+.form-group {
+  margin-bottom: 20px;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.form-control {
+  width: 100%;
+  padding: 14px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--white);
+  font-size: 16px;
+}
+.form-control:focus {
+  outline: none;
+  border-color: var(--red);
+}
+.login-btn {
+  width: 100%;
+  padding: 14px;
+  background: var(--red);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+.login-btn:hover {
+  background: #ff3b3b;
+}
+.login-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+.signup-link {
+  text-align: center;
+  margin-top: 25px;
+  opacity: 0.8;
+}
+.signup-link a {
+  color: var(--red);
+  text-decoration: none;
+  font-weight: 600;
+}
+#message {
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  display: none;
+  font-weight: 500;
+}
+.message-success {
+  background: rgba(76, 175, 80, 0.1);
+  color: #4caf50;
+  border: 1px solid rgba(76, 175, 80, 0.3);
+}
+.message-error {
+  background: rgba(255, 59, 59, 0.1);
+  color: #ff6b6b;
+  border: 1px solid rgba(255, 59, 59, 0.3);
+}
+footer {
+  text-align: center;
+  padding: 40px 0;
+  opacity: 0.6;
+  margin-top: 50px;
+  border-top: 1px solid var(--border);
+}
+.loading {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255,255,255,.3);
+  border-radius: 50%;
+  border-top-color: var(--red);
+  animation: spin 1s ease-in-out infinite;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <a href="index.html" class="logo">DECI<span>METER</span></a>
+  </header>
+  
+  <div class="login-box">
+    <div class="login-header">
+      <h1>WELCOME <span>BACK</span></h1>
+      <p>Sign in to your DECIMETER account</p>
+    </div>
+    
+    <div id="message"></div>
+    
+    <form id="loginForm">
+      <div class="form-group">
+        <label for="email">EMAIL ADDRESS</label>
+        <input type="email" id="email" class="form-control" placeholder="you@example.com" required value="test@example.com">
+      </div>
+      
+      <div class="form-group">
+        <label for="password">PASSWORD</label>
+        <input type="password" id="password" class="form-control" placeholder="••••••••" required value="test123">
+      </div>
+      
+      <button type="submit" class="login-btn" id="submitBtn">
+        <span id="btnText">SIGN IN</span>
+        <span id="btnLoading" class="loading" style="display:none;"></span>
+      </button>
+      
+      <div class="signup-link">
+        Don't have an account? <a href="signup.html">Sign up now</a>
+      </div>
+    </form>
+  </div>
+  
+  <footer>
+    © 2026 DECIMETER — Youth Streetwear Culture
+  </footer>
+</div>
+
+<script>
+// Login form handler
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const submitBtn = document.getElementById('submitBtn');
+  const btnText = document.getElementById('btnText');
+  const btnLoading = document.getElementById('btnLoading');
+  const message = document.getElementById('message');
+  
+  // Clear message
+  message.style.display = 'none';
+  message.className = '';
+  message.textContent = '';
+  
+  // Basic validation
+  if (!email || !password) {
+    showMessage('Please fill in all fields', 'error');
+    return;
+  }
+  
+  // Email validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    showMessage('Please enter a valid email address', 'error');
+    return;
+  }
+  
+  // Show loading
+  btnText.textContent = 'Signing in...';
+  btnLoading.style.display = 'inline-block';
+  submitBtn.disabled = true;
+  
+  try {
+    // Call Netlify function with real authentication
+    const response = await fetch('/.netlify/functions/auth', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        action: 'login',
+        email: email,
+        password: password
+      })
+    });
+    
+    const data = await response.json();
+    
+    if (data.success) {
+      // Save user session with token
+      const userData = {
+        id: data.user.id,
+        email: data.user.email,
+        name: data.user.name,
+        firstName: data.user.firstName,
+        lastName: data.user.lastName,
+        phone: data.user.phone,
+        loggedIn: true,
+        token: data.token
+      };
+      
+      localStorage.setItem('decimeterUser', JSON.stringify(userData));
+      localStorage.setItem('authToken', data.token);
+      
+      showMessage('Login successful! Redirecting...', 'success');
+      
+      // Check for redirect URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const redirect = urlParams.get('redirect') || 'index.html';
+      
+      // Redirect after delay
+      setTimeout(() => {
+        window.location.href = redirect;
+      }, 1500);
+      
+    } else {
+      showMessage(data.error || 'Login failed. Please try again.', 'error');
+      resetButton();
+    }
+    
+  } catch (error) {
+    console.error('Login error:', error);
+    showMessage('Network error. Please try again.', 'error');
+    resetButton();
+  }
+});
+
+// Show message function
+function showMessage(text, type) {
+  const message = document.getElementById('message');
+  message.textContent = text;
+  message.className = `message-${type}`;
+  message.style.display = 'block';
+  
+  // Auto-hide error messages after 5 seconds
+  if (type === 'error') {
+    setTimeout(() => {
+      message.style.display = 'none';
+    }, 5000);
+  }
+}
+
+function resetButton() {
+  document.getElementById('btnText').textContent = 'SIGN IN';
+  document.getElementById('btnLoading').style.display = 'none';
+  document.getElementById('submitBtn').disabled = false;
+}
+
+// Check token validity on page load
+window.addEventListener('load', async function() {
+  try {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      // Verify token with server
+      const response = await fetch('/.netlify/functions/auth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          action: 'verify',
+          token: token
+        })
+      });
+      
+      const data = await response.json();
+      if (data.success) {
+        // User is already logged in, redirect to homepage
+        window.location.href = 'index.html';
+      } else {
+        // Invalid token, clear storage
+        localStorage.removeItem('decimeterUser');
+        localStorage.removeItem('authToken');
+      }
+    }
+  } catch (e) {
+    console.log('Token check failed:', e);
+    // Clear storage on error
+    localStorage.removeItem('decimeterUser');
+    localStorage.removeItem('authToken');
+  }
+});
+</script>
+</body>
+</html>

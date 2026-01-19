@@ -1,0 +1,15 @@
+{
+  "name": "decimeter-ecommerce",
+  "version": "1.0.0",
+  "description": "DECIMETER Streetwear E-commerce",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.0",
+    "pg": "^8.11.0",
+    "postgres": "^3.3.5"
+  },
+  "scripts": {
+    "build": "echo 'No build required for static site'"
+  }
+}

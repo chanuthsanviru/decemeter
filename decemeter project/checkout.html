@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Checkout — DECIMETER</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root {
+  --black: #050505;
+  --red: #e10600;
+  --white: #ffffff;
+  --glass: rgba(255,255,255,0.08);
+  --border: rgba(255,255,255,0.2);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: radial-gradient(circle at top, #1a1a1a, #000);
+  color: var(--white);
+  min-height: 100vh;
+}
+
+.glass {
+  background: var(--glass);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.7);
+  padding: 18px;
+  transition: 0.4s;
+}
+
+/* Header */
+header {
+  position: sticky;
+  top: 20px;
+  margin: 20px;
+  padding: 18px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+}
+
+.logo {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.8rem;
+  letter-spacing: 3px;
+  cursor: pointer;
+  color: var(--white);
+  text-decoration: none;
+}
+
+.logo span { color: var(--red); }
+
+/* User Status */
+.user-status {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.user-status a {
+  color: var(--white);
+  text-decoration: none;
+  opacity: 0.8;
+  transition: 0.3s;
+}
+
+.user-status a:hover {
+  color: var(--red);
+  opacity: 1;
+}
+
+#userInfo {
+  display: none;
+  align-items: center;
+  gap: 10px;
+}
+
+#userName {
+  font-weight: 600;
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  color: var(--red);
+  cursor: pointer;
+  font-size: 0.9rem;
+  margin-left: 10px;
+}
+
+.logout-btn:hover {
+  text-decoration: underline;
+}
+
+/* Navigation */
+nav {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+nav a {
+  text-decoration: none;
+  color: var(--white);
+  opacity: 0.8;
+  transition: 0.3s;
+  font-weight: 500;
+}
+
+nav a:hover { color: var(--red); opacity: 1; }
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  z-index: 200;
+}
+
+.hamburger div {
+  width: 25px;
+  height: 3px;
+  background-color: var(--white);
+  margin: 4px 0;
+  transition: 0.3s;
+}
+
+/* Checkout Container */
+.checkout-container {
+  padding: 40px 8vw;
+  min-height: 70vh;
+}
+
+.checkout-header {
+  margin-bottom: 40px;
+}
+
+.checkout-header h1 {
+  font-size: 2.8rem;
+  color: var(--white);
+}
+
+.checkout-header h1 span { color: var(--red); }
+
+.checkout-content {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 40px;
+}
+
+@media(max-width: 1024px) {
+  .checkout-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Checkout Steps */
+.checkout-steps {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+.checkout-steps::before {
+  content: '';
+  position: absolute;
+  top: 25px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--border);
+  z-index: 1;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  flex: 1;
+}
+
+.step-number {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.05);
+  border: 2px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+  transition: all 0.3s;
+}
+
+.step.active .step-number {
+  background: var(--red);
+  border-color: var(--red);
+}
+
+.step.completed .step-number {
+  background: rgba(225,6,0,0.2);
+  border-color: var(--red);
+}
+
+.step.completed .step-number::after {
+  content: '✓';
+  color: var(--red);
+}
+
+.step-label {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  text-align: center;
+}
+
+.step.active .step-label {
+  opacity: 1;
+  font-weight: 600;
+}
+
+/* Checkout Form */
+.checkout-form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.form-section {
+  padding: 25px;
+}
+
+.form-section h3 {
+  font-size: 1.4rem;
+  margin-bottom: 20px;
+  color: var(--white);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-section h3 i {
+  color: var(--red);
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.form-control {
+  width: 100%;
+  padding: 15px 20px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--white);
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--red);
+  box-shadow: 0 0 0 2px rgba(225,6,0,0.2);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* Payment Methods */
+.payment-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.payment-method {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.payment-method:hover {
+  background: rgba(255,255,255,0.1);
+}
+
+.payment-method.selected {
+  background: rgba(225,6,0,0.1);
+  border-color: var(--red);
+}
+
+.payment-icon {
+  font-size: 1.5rem;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.payment-details {
+  flex: 1;
+}
+
+.payment-title {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.payment-desc {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+/* Order Summary */
+.order-summary {
+  position: sticky;
+  top: 120px;
+}
+
+.order-items {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+.order-item {
+  display: flex;
+  gap: 15px;
+  padding: 15px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.order-item:last-child {
+  border-bottom: none;
+}
+
+.order-item-img {
+  width: 70px;
+  height: 70px;
+  border-radius: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.order-item-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.order-item-details {
+  flex: 1;
+}
+
+.order-item-name {
+  font-weight: 600;
+  margin-bottom: 5px;
+  font-size: 0.95rem;
+}
+
+.order-item-info {
+  font-size: 0.85rem;
+  opacity: 0.7;
+  margin-bottom: 5px;
+}
+
+.order-item-price {
+  color: var(--red);
+  font-weight: 600;
+}
+
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid var(--border);
+}
+
+.summary-row.total {
+  border-bottom: none;
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+
+.summary-row.total .value {
+  color: var(--red);
+}
+
+.place-order-btn {
+  width: 100%;
+  padding: 18px;
+  border-radius: 50px;
+  background: var(--red);
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 1.1rem;
+  margin-top: 25px;
+  transition: transform 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.place-order-btn:hover {
+  transform: scale(1.03);
+  background: #ff3b3b;
+}
+
+.back-to-cart-btn {
+  width: 100%;
+  padding: 15px;
+  border-radius: 50px;
+  background: transparent;
+  color: var(--white);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 15px;
+  transition: all 0.3s;
+}
+
+.back-to-cart-btn:hover {
+  background: rgba(255,255,255,0.05);
+  border-color: var(--red);
+}
+
+/* Security Badge */
+.security-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+  padding: 15px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 12px;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.security-badge i {
+  color: #4caf50;
+}
+
+/* Footer */
+footer {
+  padding: 50px 20px;
+  text-align: center;
+  opacity: 0.6;
+  border-top: 1px solid var(--border);
+  margin-top: 60px;
+}
+
+/* Login Required Message */
+.login-required {
+  text-align: center;
+  padding: 60px 20px;
+}
+
+.login-required i {
+  font-size: 4rem;
+  color: var(--red);
+  margin-bottom: 20px;
+  opacity: 0.5;
+}
+
+.login-required h3 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+
+.login-required p {
+  opacity: 0.7;
+  margin-bottom: 30px;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Responsive */
+@media(max-width:768px){
+  nav {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    height: 100vh;
+    width: 280px;
+    background: rgba(5,5,5,0.95);
+    backdrop-filter: blur(20px);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    transition: right 0.3s ease;
+    z-index: 150;
+  }
+  
+  nav.show { right: 0; }
+  
+  .hamburger { display: flex; }
+  .hamburger.active div:nth-child(1) { transform: rotate(-45deg) translate(-5px, 6px); }
+  .hamburger.active div:nth-child(2) { opacity: 0; }
+  .hamburger.active div:nth-child(3) { transform: rotate(45deg) translate(-5px, -6px); }
+  
+  .checkout-steps {
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  
+  .checkout-steps::before {
+    display: none;
+  }
+  
+  .step {
+    flex-direction: row;
+    gap: 15px;
+    width: 100%;
+  }
+  
+  .step-number {
+    margin-bottom: 0;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .user-status {
+    display: none;
+  }
+}
+
+/* Login/Logout Styles */
+#loginLink {
+  display: inline-block;
+}
+
+#userInfo {
+  display: none;
+}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="glass">
+  <a href="index.html" class="logo">DECI<span>METER</span></a>
+  
+  <!-- Hamburger Menu (Mobile) -->
+  <div class="hamburger" id="hamburger">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+
+  <nav id="nav-links">
+    <a href="index.html">Home</a>
+    <a href="shop.html">Shop</a>
+    <a href="drops.html">Drops</a>
+    <a href="about.html">About</a>
+    <a href="cart.html">Cart</a>
+    
+    <!-- User Status -->
+    <div class="user-status">
+      <a href="login.html" id="loginLink">Login</a>
+      <div id="userInfo">
+        <span>Hi, <span id="userName"></span></span>
+        <button class="logout-btn" onclick="logout()">Logout</button>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- Checkout Container -->
+<div class="checkout-container">
+  <div class="checkout-header">
+    <h1>CHECK<span>OUT</span></h1>
+  </div>
+  
+  <!-- Login Required Message (shown when not logged in) -->
+  <div id="loginRequired" class="login-required glass" style="display: none;">
+    <i class="fas fa-lock"></i>
+    <h3>LOGIN REQUIRED</h3>
+    <p>Please login to complete your checkout. You'll be redirected to the login page.</p>
+    <button class="place-order-btn" onclick="window.location.href='login.html?redirect=checkout.html'">
+      <i class="fas fa-sign-in-alt"></i>
+      GO TO LOGIN
+    </button>
+  </div>
+  
+  <!-- Checkout Content (shown when logged in) -->
+  <div id="checkoutContent" style="display: none;">
+    <!-- Checkout Steps -->
+    <div class="checkout-steps">
+      <div class="step active">
+        <div class="step-number">1</div>
+        <div class="step-label">SHIPPING</div>
+      </div>
+      <div class="step">
+        <div class="step-number">2</div>
+        <div class="step-label">PAYMENT</div>
+      </div>
+      <div class="step">
+        <div class="step-number">3</div>
+        <div class="step-label">CONFIRMATION</div>
+      </div>
+    </div>
+    
+    <div class="checkout-content">
+      <!-- Checkout Form -->
+      <div class="checkout-form">
+        <!-- Shipping Information -->
+        <div class="form-section glass">
+          <h3><i class="fas fa-truck"></i> SHIPPING INFORMATION</h3>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">FIRST NAME</label>
+              <input type="text" id="firstName" class="form-control" placeholder="John" required>
+            </div>
+            <div class="form-group">
+              <label for="lastName">LAST NAME</label>
+              <input type="text" id="lastName" class="form-control" placeholder="Doe" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="email">EMAIL ADDRESS</label>
+            <input type="email" id="email" class="form-control" placeholder="you@example.com" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="phone">PHONE NUMBER</label>
+            <input type="tel" id="phone" class="form-control" placeholder="+94 77 123 4567" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="address">STREET ADDRESS</label>
+            <input type="text" id="address" class="form-control" placeholder="123 Street Name" required>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label for="city">CITY</label>
+              <input type="text" id="city" class="form-control" placeholder="Colombo" required>
+            </div>
+            <div class="form-group">
+              <label for="zip">ZIP CODE</label>
+              <input type="text" id="zip" class="form-control" placeholder="01000" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="country">COUNTRY</label>
+            <select id="country" class="form-control" required>
+              <option value="">Select Country</option>
+              <option value="LK">Sri Lanka</option>
+              <option value="US">United States</option>
+              <option value="UK">United Kingdom</option>
+              <option value="CA">Canada</option>
+              <option value="AU">Australia</option>
+            </select>
+          </div>
+        </div>
+        
+        <!-- Payment Information -->
+        <div class="form-section glass">
+          <h3><i class="fas fa-credit-card"></i> PAYMENT METHOD</h3>
+          
+          <div class="payment-methods">
+            <div class="payment-method selected" data-method="card">
+              <div class="payment-icon">
+                <i class="fas fa-credit-card"></i>
+              </div>
+              <div class="payment-details">
+                <div class="payment-title">Credit / Debit Card</div>
+                <div class="payment-desc">Pay securely with your card</div>
+              </div>
+              <i class="fas fa-check-circle" style="color: var(--red);"></i>
+            </div>
+            
+            <div class="payment-method" data-method="paypal">
+              <div class="payment-icon">
+                <i class="fab fa-paypal"></i>
+              </div>
+              <div class="payment-details">
+                <div class="payment-title">PayPal</div>
+                <div class="payment-desc">Fast and secure online payments</div>
+              </div>
+            </div>
+            
+            <div class="payment-method" data-method="cod">
+              <div class="payment-icon">
+                <i class="fas fa-money-bill-wave"></i>
+              </div>
+              <div class="payment-details">
+                <div class="payment-title">Cash on Delivery</div>
+                <div class="payment-desc">Pay when you receive your order</div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Card Details (shown when card is selected) -->
+          <div id="cardDetails" style="margin-top: 20px;">
+            <div class="form-group">
+              <label for="cardNumber">CARD NUMBER</label>
+              <input type="text" id="cardNumber" class="form-control" placeholder="1234 5678 9012 3456" maxlength="19">
+            </div>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="expiry">EXPIRY DATE</label>
+                <input type="text" id="expiry" class="form-control" placeholder="MM/YY" maxlength="5">
+              </div>
+              <div class="form-group">
+                <label for="cvv">CVV</label>
+                <input type="text" id="cvv" class="form-control" placeholder="123" maxlength="3">
+              </div>
+            </div>
+            
+            <div class="form-group">
+              <label for="cardName">NAME ON CARD</label>
+              <input type="text" id="cardName" class="form-control" placeholder="John Doe">
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Order Summary -->
+      <div class="order-summary">
+        <div class="glass" style="padding: 25px;">
+          <h3 style="margin-bottom: 20px;">ORDER SUMMARY</h3>
+          
+          <div class="order-items" id="orderItems">
+            <!-- Order items will be loaded dynamically -->
+          </div>
+          
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span class="value" id="subtotal">$0.00</span>
+          </div>
+          <div class="summary-row">
+            <span>Shipping</span>
+            <span class="value" id="shipping">$0.00</span>
+          </div>
+          <div class="summary-row">
+            <span>Tax (8%)</span>
+            <span class="value" id="tax">$0.00</span>
+          </div>
+          <div class="summary-row total">
+            <span>Total</span>
+            <span class="value" id="total">$0.00</span>
+          </div>
+          
+          <button class="place-order-btn" id="placeOrderBtn">
+            <i class="fas fa-lock"></i>
+            PLACE ORDER
+          </button>
+          
+          <button class="back-to-cart-btn" onclick="window.location.href='cart.html'">
+            <i class="fas fa-arrow-left"></i>
+            BACK TO CART
+          </button>
+          
+          <div class="security-badge">
+            <i class="fas fa-shield-alt"></i>
+            <span>Secure checkout • Your information is protected</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>© 2026 DECIMETER — Youth Streetwear Culture</footer>
+
+<script>
+// Replace the old checkLoginStatus function with:
+async function checkLoginStatus() {
+  try {
+    const isLoggedIn = await AuthHelper.checkLoginStatus();
+    
+    if (isLoggedIn) {
+      const user = AuthHelper.getUser();
+      // User is logged in
+      const loginLink = document.getElementById('loginLink');
+      const userInfo = document.getElementById('userInfo');
+      const userName = document.getElementById('userName');
+      
+      if (loginLink) loginLink.style.display = 'none';
+      if (userInfo) userInfo.style.display = 'flex';
+      if (userName) userName.textContent = user.name || user.email;
+    } else {
+      AuthHelper.clearAuthUI();
+    }
+    
+    return isLoggedIn;
+  } catch (e) {
+    console.log('Error checking login status:', e);
+    AuthHelper.clearAuthUI();
+    return false;
+  }
+}
+
+// Replace logout function:
+function logout() {
+  AuthHelper.logout();
+}
+
+// Product data for calculations
+const productsData = {
+  1: { name: "Decimeter T", price: 10 },
+  2: { name: "Decimeter T2", price: 10 },
+  3: { name: "Cargo Pants", price: 45 },
+  4: { name: "Black Hoodie", price: 65 },
+  5: { name: "Red Jacket", price: 89 },
+  6: { name: "Street Pants", price: 55 },
+  7: { name: "White Tee", price: 12 },
+  8: { name: "Winter Hoodie", price: 75 },
+  101: { name: "Shadow Collection", price: 89 },
+  102: { name: "Liquid Hoodie", price: 120 },
+  103: { name: "Quantum Cargos", price: 95 }
+};
+
+// DOM elements
+const hamburger = document.getElementById('hamburger');
+const nav = document.getElementById('nav-links');
+const orderItems = document.getElementById('orderItems');
+const subtotalEl = document.getElementById('subtotal');
+const shippingEl = document.getElementById('shipping');
+const taxEl = document.getElementById('tax');
+const totalEl = document.getElementById('total');
+const placeOrderBtn = document.getElementById('placeOrderBtn');
+const paymentMethods = document.querySelectorAll('.payment-method');
+const cardDetails = document.getElementById('cardDetails');
+
+// Hamburger menu
+if (hamburger) {
+  hamburger.addEventListener('click', () => {
+    nav.classList.toggle('show');
+    hamburger.classList.toggle('active');
+  });
+}
+
+// Load order summary
+function loadOrderSummary() {
+  const cart = JSON.parse(localStorage.getItem('decimeterCart')) || [];
+  
+  if (cart.length === 0) {
+    // Redirect to cart if empty
+    window.location.href = 'cart.html';
+    return;
+  }
+  
+  let subtotal = 0;
+  let html = '';
+  
+  cart.forEach(item => {
+    const product = productsData[item.id];
+    const itemTotal = product.price * item.quantity;
+    subtotal += itemTotal;
+    
+    html += `
+      <div class="order-item">
+        <div class="order-item-img">
+          <img src="${item.image || 'images/default.jpg'}" alt="${item.name}">
+        </div>
+        <div class="order-item-details">
+          <div class="order-item-name">${item.name}</div>
+          ${item.size ? `<div class="order-item-info">Size: ${item.size} | Color: ${item.color || 'Default'}</div>` : ''}
+          <div class="order-item-info">Qty: ${item.quantity}</div>
+          <div class="order-item-price">$${itemTotal.toFixed(2)}</div>
+        </div>
+      </div>
+    `;
+  });
+  
+  orderItems.innerHTML = html;
+  
+  const shipping = subtotal > 100 ? 0 : 10;
+  const tax = subtotal * 0.08;
+  const total = subtotal + shipping + tax;
+  
+  subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+  shippingEl.textContent = shipping === 0 ? 'FREE' : `$${shipping.toFixed(2)}`;
+  taxEl.textContent = `$${tax.toFixed(2)}`;
+  totalEl.textContent = `$${total.toFixed(2)}`;
+}
+
+// Payment method selection
+if (paymentMethods) {
+  paymentMethods.forEach(method => {
+    method.addEventListener('click', () => {
+      paymentMethods.forEach(m => {
+        m.classList.remove('selected');
+        m.querySelector('.fa-check-circle')?.remove();
+      });
+      
+      method.classList.add('selected');
+      
+      // Add checkmark
+      const checkmark = document.createElement('i');
+      checkmark.className = 'fas fa-check-circle';
+      checkmark.style.color = 'var(--red)';
+      method.appendChild(checkmark);
+      
+      // Show/hide card details
+      const paymentType = method.getAttribute('data-method');
+      if (paymentType === 'card') {
+        cardDetails.style.display = 'block';
+      } else {
+        cardDetails.style.display = 'none';
+      }
+    });
+  });
+}
+
+// Format card number
+const cardNumberInput = document.getElementById('cardNumber');
+if (cardNumberInput) {
+  cardNumberInput.addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\s+/g, '').replace(/[^0-9]/gi, '');
+    let formatted = '';
+    
+    for (let i = 0; i < value.length; i++) {
+      if (i > 0 && i % 4 === 0) formatted += ' ';
+      formatted += value[i];
+    }
+    
+    e.target.value = formatted;
+  });
+}
+
+// Format expiry date
+const expiryInput = document.getElementById('expiry');
+if (expiryInput) {
+  expiryInput.addEventListener('input', function(e) {
+    let value = e.target.value.replace(/[^0-9]/g, '');
+    
+    if (value.length >= 2) {
+      value = value.substring(0, 2) + '/' + value.substring(2, 4);
+    }
+    
+    e.target.value = value;
+  });
+}
+
+// Place order
+if (placeOrderBtn) {
+  placeOrderBtn.addEventListener('click', () => {
+    // Get form values
+    const firstName = document.getElementById('firstName').value;
+    const lastName = document.getElementById('lastName').value;
+    const email = document.getElementById('email').value;
+    const phone = document.getElementById('phone').value;
+    const address = document.getElementById('address').value;
+    const city = document.getElementById('city').value;
+    const zip = document.getElementById('zip').value;
+    const country = document.getElementById('country').value;
+    
+    // Basic validation
+    if (!firstName || !lastName || !email || !phone || !address || !city || !zip || !country) {
+      alert('Please fill in all required fields');
+      return;
+    }
+    
+    // Get selected payment method
+    const selectedMethod = document.querySelector('.payment-method.selected');
+    const paymentType = selectedMethod?.getAttribute('data-method');
+    
+    if (paymentType === 'card') {
+      const cardNumber = document.getElementById('cardNumber').value;
+      const expiry = document.getElementById('expiry').value;
+      const cvv = document.getElementById('cvv').value;
+      const cardName = document.getElementById('cardName').value;
+      
+      if (!cardNumber || !expiry || !cvv || !cardName) {
+        alert('Please fill in all card details');
+        return;
+      }
+      
+      // Validate card number (simple check)
+      if (cardNumber.replace(/\s/g, '').length !== 16) {
+        alert('Please enter a valid 16-digit card number');
+        return;
+      }
+      
+      // Validate CVV
+      if (cvv.length !== 3) {
+        alert('Please enter a valid 3-digit CVV');
+        return;
+      }
+    }
+    
+    // Create order object
+    const order = {
+      orderId: 'DECI-' + Date.now().toString().slice(-8),
+      customer: { firstName, lastName, email, phone },
+      shipping: { address, city, zip, country },
+      paymentMethod: paymentType,
+      items: JSON.parse(localStorage.getItem('decimeterCart')) || [],
+      total: totalEl.textContent,
+      date: new Date().toISOString()
+    };
+    
+    // Save order to localStorage
+    localStorage.setItem('lastOrder', JSON.stringify(order));
+    
+    // Clear cart if not in buy now mode
+    const buyNowMode = localStorage.getItem('buyNowMode') === 'true';
+    if (!buyNowMode) {
+      localStorage.removeItem('decimeterCart');
+    }
+    localStorage.removeItem('buyNowMode');
+    
+    // Show success message and redirect
+    alert(`Order placed successfully!\nOrder ID: ${order.orderId}\nThank you for your purchase!`);
+    
+    // Redirect to success page
+    window.location.href = 'success.html?form=order';
+  });
+}
+
+// Initialize
+document.addEventListener('DOMContentLoaded', function() {
+  checkLoginStatus();
+  
+  // Only load order summary if user is logged in
+  if (checkLoginStatus()) {
+    loadOrderSummary();
+    
+    // Check if cart is empty
+    const cart = JSON.parse(localStorage.getItem('decimeterCart')) || [];
+    if (cart.length === 0) {
+      window.location.href = 'cart.html';
+    }
+  }
+});
+</script>
+</body>
+</html>

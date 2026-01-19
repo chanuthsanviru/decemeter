@@ -1,0 +1,112 @@
+// Simple auth function that always works (demo mode)
+exports.handler = async (event, context) => {
+  console.log('Auth function called');
+  
+  // CORS headers
+  const headers = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS, GET',
+    'Content-Type': 'application/json'
+  };
+
+  // Handle preflight
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 200, headers, body: '' };
+  }
+
+  // For testing: GET request returns function status
+  if (event.httpMethod === 'GET') {
+    return {
+      statusCode: 200,
+      headers,
+      body: JSON.stringify({
+        status: 'active',
+        message: 'Auth function is working',
+        timestamp: new Date().toISOString()
+      })
+    };
+  }
+
+  try {
+    // Parse request body
+    let body = {};
+    if (event.body) {
+      try {
+        body = JSON.parse(event.body);
+      } catch (e) {
+        return {
+          statusCode: 400,
+          headers,
+          body: JSON.stringify({
+            success: false,
+            error: 'Invalid JSON in request body'
+          })
+        };
+      }
+    }
+
+    const { action, email, password, firstName, lastName } = body;
+    console.log(`Action: ${action}, Email: ${email}`);
+
+    // DEMO MODE - Always works without database
+    if (action === 'login') {
+      // Accept any login for demo
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({
+          success: true,
+          message: 'Login successful',
+          user: {
+            id: Date.now(),
+            email: email || 'demo@example.com',
+            firstName: 'Demo',
+            lastName: 'User',
+            createdAt: new Date().toISOString()
+          }
+        })
+      };
+    }
+
+    if (action === 'register') {
+      // Accept any registration for demo
+      return {
+        statusCode: 200,
+        headers,
+        body: JSON.stringify({
+          success: true,
+          message: 'Registration successful',
+          user: {
+            id: Date.now(),
+            email: email || 'newuser@example.com',
+            firstName: firstName || 'New',
+            lastName: lastName || 'User',
+            createdAt: new Date().toISOString()
+          }
+        })
+      };
+    }
+
+    // Default response
+    return {
+      statusCode: 400,
+      headers,
+      body: JSON.stringify({
+        success: false,
+        error: 'Invalid action. Use "login" or "register".'
+      })
+    };
+
+  } catch (error) {
+    console.error('Error:', error);
+    return {
+      statusCode: 500,
+      headers,
+      body: JSON.stringify({
+        success: false,
+        error: 'Internal server error'
+      })
+    };
+  }
+};
